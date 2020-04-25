@@ -43,14 +43,14 @@ jobs:
       - name: "Step | Upload Artifact"
         uses: actions/upload-artifact@v1.0.0
         with:
-          name: <chandan>
+          name: chandan
           path: ./webapp
         continue-on-error: false
 
       - name: "Step | Publish to Azure"
         uses: azure/webapps-deploy@v2
         with:
-          app-name: <Appname>
-          publish-profile: <Publish Profile>
+          app-name: gabc202nepal
+          publish-profile: ${{ secrets.publishprofile }}
           package: "./webapp"
         continue-on-error: false
