@@ -1,0 +1,56 @@
+name: GABC 2020 Build
+
+on:
+  push:
+    branches:
+      - dev
+      - stage
+      - master
+  pull_request:
+    types:
+      - closed
+    branches:
+      - master
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    name: "Build & Publish"
+
+    steps:
+      - name: "Step | Checkout Branch"
+        uses: actions/checkout@master
+        with:
+          ref: master
+        continue-on-error: false
+
+      - name: "Step | Setup NuGET CLI"
+        uses: NuGet/setup-nuget@v1.0.2
+        continue-on-error: false
+
+      - name: "Step | Setup .NET Core SDK"
+        uses: actions/setup-dotnet@v1.4.0
+        continue-on-error: false
+
+      - name: "Step | .NET Restore"
+        run: dotnet restore 
+        continue-on-error: false
+
+      - name: "Step | .NET Publish"
+        run: dotnet publish --configuration Release --verbosity normal --output ./webapp
+        continue-on-error: false
+
+      - name: "Step | Upload Artifact"
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: chandan
+          path: ./webapp
+        continue-on-error: false
+
+      - name: "Step | Publish to Azure"
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: gabc2020Nepal
+          publish-profile: ${{ secrets.publishprofile }}
+          package: "./webapp"
+        continue-on-error: false
