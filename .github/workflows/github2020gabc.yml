@@ -50,7 +50,7 @@ jobs:
       - name: "Step | Publish to Azure"
         uses: azure/webapps-deploy@v2
         with:
-          app-name: gabc202nepal
+          app-name: gabc2020Nepal
           publish-profile: ${{ secrets.publishprofile }}
           package: "./webapp"
         continue-on-error: false
